@@ -1,0 +1,356 @@
+import { X, Volume2, Leaf, Weight, Heart, Play, Square, Languages } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+interface AnimalCardProps {
+  name: string;
+  scientificName: string;
+  image: string;
+  habitat: string;
+  diet: string;
+  status: string;
+  funFact: string;
+  statusColor: string;
+  description?: string;
+  lifespan?: string;
+  activity?: string;
+  size?: string;
+  weight?: string;
+  distribution?: string;
+  conservation?: string;
+  threats?: string[];
+  importance?: string;
+  funFacts?: string[];
+}
+
+export function AnimalCard({
+  name,
+  scientificName,
+  image,
+  habitat,
+  diet,
+  status,
+  funFact,
+  statusColor,
+  description,
+  lifespan,
+  activity,
+  size,
+  weight,
+  distribution,
+  conservation,
+  threats,
+  importance,
+  funFacts,
+}: AnimalCardProps) {
+  const { t, i18n } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const currentLanguage = (i18n.resolvedLanguage || i18n.language || 'es').startsWith('es') ? 'es' : 'en';
+
+  const toggleLanguage = () => {
+    const nextLanguage = currentLanguage === 'es' ? 'en' : 'es';
+    i18n.changeLanguage(nextLanguage);
+    localStorage.setItem('language', nextLanguage);
+  };
+
+  const getNarrationText = () => {
+    const aboutText = description || funFact || t('ui.animalPanel.aboutFallback');
+    const distributionText = distribution || habitat;
+    const importanceText = importance || t('ui.animalPanel.importanceFallback');
+    const conservationText = conservation || status;
+    const threatsText = threats && threats.length > 0 ? threats.join(', ') : t('ui.animalPanel.notSpecified');
+    const factsText = funFacts && funFacts.length > 0 ? funFacts.join(', ') : funFact;
+
+    return [
+      `${name}. ${scientificName}.`,
+      `${t('ui.animalPanel.aboutSpecies')}: ${aboutText}.`,
+      `${t('ui.animalPanel.distribution')}: ${distributionText}.`,
+      `${t('ui.animalPanel.naturalHabitat')}: ${habitat}.`,
+      `${t('ui.animalPanel.activity')}: ${activity || t('ui.animalPanel.notSpecified')}.`,
+      `${t('ui.animalPanel.feeding')}: ${diet}.`,
+      `${t('ui.animalPanel.size')}: ${size || t('ui.animalPanel.notSpecified')}.`,
+      `${t('ui.animalPanel.weight')}: ${weight || t('ui.animalPanel.notSpecified')}.`,
+      `${t('ui.animalPanel.lifespan')}: ${lifespan || t('ui.animalPanel.notSpecified')}.`,
+      `${t('ui.animalPanel.conservationStatus')}: ${conservationText}.`,
+      `${t('ui.animalPanel.importance')}: ${importanceText}.`,
+      `${t('ui.animalPanel.threats')}: ${threatsText}.`,
+      `${t('ui.animalPanel.funFacts')}: ${factsText}.`
+    ].join(' ');
+  };
+
+  const selectFemaleVoice = (lang: 'es' | 'en') => {
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) {
+      return null;
+    }
+
+    const preferredLangs = lang === 'es' ? ['es-MX', 'es-ES', 'es'] : ['en-US', 'en-GB', 'en'];
+    const femaleHints = lang === 'es'
+      ? ['female', 'woman', 'mujer', 'sabina', 'helena', 'sofia', 'paulina', 'maria', 'lucia']
+      : ['female', 'woman', 'zira', 'aria', 'samantha', 'karen', 'joanna', 'jenny'];
+
+    const byLanguage = voices.filter((voice) =>
+      preferredLangs.some((preferred) => voice.lang.toLowerCase().startsWith(preferred.toLowerCase()))
+    );
+
+    const femaleVoice = byLanguage.find((voice) => {
+      const voiceName = voice.name.toLowerCase();
+      return femaleHints.some((hint) => voiceName.includes(hint));
+    });
+
+    return femaleVoice || byLanguage[0] || voices[0];
+  };
+
+  const handleAudio = () => {
+    if (isPlaying) {
+      // Detener audio
+      window.speechSynthesis.cancel();
+      setIsPlaying(false);
+    } else {
+      // Iniciar audio
+      const utterance = new SpeechSynthesisUtterance(getNarrationText());
+      utterance.lang = currentLanguage === 'es' ? 'es-ES' : 'en-US';
+      utterance.rate = 1;
+      utterance.pitch = 1;
+
+      const selectedVoice = selectFemaleVoice(currentLanguage);
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      }
+
+      utterance.onend = () => {
+        setIsPlaying(false);
+      };
+
+      setIsPlaying(true);
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  if (isOpen) {
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center p-4 overflow-y-auto">
+        <div className="bg-white rounded-lg max-w-5xl w-full my-8 shadow-xl">
+          {/* Header con título */}
+          <div className="bg-gray-900 text-white p-6 flex justify-between items-start relative">
+            <div>
+              <h1 className="text-3xl font-bold">{name}</h1>
+              <p className="text-gray-400 italic text-sm">({scientificName})</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className={`px-4 py-2 rounded-full text-sm font-bold ${statusColor}`}>
+                {conservation || status}
+              </div>
+              <button
+                onClick={toggleLanguage}
+                className="bg-white/10 hover:bg-white/20 px-3 py-2 rounded text-sm font-semibold text-white flex items-center gap-2"
+              >
+                <Languages size={16} />
+                {currentLanguage === 'es' ? 'EN' : 'ES'}
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  window.speechSynthesis.cancel();
+                  setIsPlaying(false);
+                }}
+                className="bg-gray-700 hover:bg-gray-600 p-2 rounded text-white"
+                aria-label={t('ui.animalPanel.closePanelAria')}
+              >
+                <X size={20} />
+              </button>
+            </div>
+          </div>
+
+          {/* Imagen grande */}
+          <div className="border-b-4 border-yellow-400 overflow-hidden bg-gray-100">
+            <img
+              src={image}
+              alt={name}
+              className="w-full h-80 object-cover"
+            />
+          </div>
+
+          {/* Contenido principal */}
+          <div className="p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Columna izquierda */}
+              <div className="space-y-6">
+                {/* Audio */}
+                <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Volume2 size={20} className="text-gray-700" />
+                    <h3 className="font-bold text-gray-900 text-sm uppercase">{t('ui.animalPanel.audioTitle')}</h3>
+                  </div>
+                  <p className="text-xs text-gray-600 mb-3">
+                    {t('ui.animalPanel.noAudioMessage')}
+                  </p>
+                  <button 
+                    onClick={handleAudio}
+                    className={`flex items-center justify-center gap-2 w-full px-3 py-2 rounded text-sm font-semibold transition-colors ${
+                      isPlaying 
+                        ? 'bg-red-600 text-white hover:bg-red-700' 
+                        : 'bg-gray-800 text-white hover:bg-gray-900'
+                    }`}
+                  >
+                    {isPlaying ? (
+                      <>
+                        <Square size={14} />
+                        {t('ui.animalPanel.stopNarration')}
+                      </>
+                    ) : (
+                      <>
+                        <Play size={14} />
+                        {t('ui.animalPanel.listenNarration')}
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Características */}
+                <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
+                  <h3 className="font-bold mb-4 text-center text-gray-900 text-sm uppercase">{t('ui.animalPanel.features')}</h3>
+                  <div className="space-y-3">
+                    <div className="bg-yellow-100 text-gray-900 p-3 rounded border-l-4 border-yellow-400">
+                      <p className="text-xs font-bold uppercase">{t('ui.animalPanel.activity')}</p>
+                      <p className="text-sm text-gray-800">{activity || t('ui.animalPanel.notSpecified')}</p>
+                    </div>
+                    <div className="bg-yellow-100 text-gray-900 p-3 rounded border-l-4 border-yellow-400">
+                      <p className="text-xs font-bold uppercase flex items-center gap-1">
+                        <Leaf size={14} /> {t('ui.animalPanel.feeding')}
+                      </p>
+                      <p className="text-sm text-gray-800">{diet}</p>
+                    </div>
+                    <div className="bg-yellow-100 text-gray-900 p-3 rounded border-l-4 border-yellow-400">
+                      <p className="text-xs font-bold uppercase">{t('ui.animalPanel.size')}</p>
+                      <p className="text-sm text-gray-800">{size || t('ui.animalPanel.notSpecified')}</p>
+                    </div>
+                    <div className="bg-yellow-100 text-gray-900 p-3 rounded border-l-4 border-yellow-400">
+                      <p className="text-xs font-bold uppercase flex items-center gap-1">
+                        <Weight size={14} /> {t('ui.animalPanel.weight')}
+                      </p>
+                      <p className="text-sm text-gray-800">{weight || t('ui.animalPanel.notSpecified')}</p>
+                    </div>
+                    <div className="bg-yellow-100 text-gray-900 p-3 rounded border-l-4 border-yellow-400">
+                      <p className="text-xs font-bold uppercase flex items-center gap-1">
+                        <Heart size={14} /> {t('ui.animalPanel.lifespan')}
+                      </p>
+                      <p className="text-sm text-gray-800">{lifespan || t('ui.animalPanel.notSpecified')}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Columna derecha */}
+              <div className="lg:col-span-2 space-y-4">
+                {/* Sobre esta especie */}
+                <div className="border-l-4 border-green-500 bg-green-50 p-4 rounded-r-lg">
+                  <h3 className="text-sm font-bold text-green-700 uppercase mb-2">📋 {t('ui.animalPanel.aboutSpecies')}</h3>
+                  <p className="text-gray-700 text-sm leading-relaxed">
+                    {description || funFact || t('ui.animalPanel.aboutFallback')}
+                  </p>
+                </div>
+
+                {/* Distribución */}
+                <div className="border-l-4 border-green-500 bg-green-50 p-4 rounded-r-lg">
+                  <h3 className="text-sm font-bold text-green-700 uppercase mb-2">📍 {t('ui.animalPanel.distribution')}</h3>
+                  <p className="text-gray-700 text-sm mb-2">{distribution || habitat}</p>
+                  <div className="bg-green-100 p-2 rounded text-xs text-gray-700">
+                    <p>🌿 <span className="font-semibold">{t('ui.animalPanel.naturalHabitat')}:</span> {habitat}</p>
+                  </div>
+                </div>
+
+                {/* Importancia */}
+                <div className="border-l-4 border-yellow-500 bg-yellow-50 p-4 rounded-r-lg">
+                  <h3 className="text-sm font-bold text-yellow-700 uppercase mb-2">⭐ {t('ui.animalPanel.importance')}</h3>
+                  <p className="text-gray-700 text-sm">
+                    {importance || t('ui.animalPanel.importanceFallback')}
+                  </p>
+                </div>
+
+                {/* Amenazas */}
+                {threats && threats.length > 0 && (
+                  <div className="border-l-4 border-red-400 bg-red-50 p-4 rounded-r-lg">
+                    <h3 className="text-sm font-bold text-red-700 uppercase mb-2">⚠️ {t('ui.animalPanel.threats')}</h3>
+                    <div className="space-y-1">
+                      {threats.map((threat, idx) => (
+                        <p key={idx} className="text-gray-700 text-sm">
+                          🔺 {threat}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Datos curiosos */}
+                {funFacts && funFacts.length > 0 && (
+                  <div className="border-l-4 border-yellow-500 bg-yellow-50 p-4 rounded-r-lg">
+                    <h3 className="text-sm font-bold text-yellow-700 uppercase mb-3">💡 {t('ui.animalPanel.funFacts')}</h3>
+                    <ul className="space-y-1">
+                      {funFacts.map((fact, idx) => (
+                        <li key={idx} className="text-gray-700 text-sm">
+                          ✨ {fact}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  // Vista de tarjeta (cuando no está expandida)
+  return (
+    <div
+      onClick={() => setIsOpen(true)}
+      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 overflow-hidden cursor-pointer group"
+    >
+      {/* Imagen */}
+      <div className="relative h-56 overflow-hidden bg-gray-100">
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+        />
+      </div>
+
+      {/* Contenido */}
+      <div className="p-4">
+        <h3 className="text-lg font-bold text-gray-900">{name}</h3>
+        <p className="text-xs text-gray-500 italic mb-3">{scientificName}</p>
+
+        {/* Estado */}
+        <div className={`inline-block text-xs font-semibold px-2 py-1 rounded-full mb-3 ${statusColor}`}>
+          {status}
+        </div>
+
+        {/* Info rápida */}
+        <div className="space-y-2 text-xs text-gray-600 mb-4">
+          <p className="truncate">
+            <span className="font-semibold">{t('ui.animalCard.habitatLabel')}:</span> {habitat}
+          </p>
+          <p className="truncate">
+            <span className="font-semibold">{t('ui.animalCard.dietLabel')}:</span> {diet}
+          </p>
+        </div>
+
+        {/* Curiosidades */}
+        <p className="text-xs text-gray-700 line-clamp-2 mb-4">
+          <span className="font-semibold">💡 {t('ui.animalCard.funFactLabel')}: </span>
+          {funFact}
+        </p>
+
+        {/* Botón */}
+        <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded font-semibold text-sm transition-colors">
+          {t('ui.animalCard.viewMore')}
+        </button>
+      </div>
+    </div>
+  );
+}

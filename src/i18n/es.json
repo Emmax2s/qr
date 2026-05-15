@@ -1,0 +1,441 @@
+{
+  "ui": {
+    "navbar": {
+      "home": "Inicio",
+      "animals": "Animales",
+      "visit": "Planea tu Visita",
+      "map": "Mapa del Zoo",
+      "info": "Informacion",
+      "contact": "Contacto",
+      "languageLabel": "Idioma"
+    },
+    "animalsSection": {
+      "title": "Nuestros Animales",
+      "subtitle": "Conoce a algunos de los increibles animales que llaman hogar a nuestro zoologico"
+    },
+    "hero": {
+      "zooViewAlt": "Vista del zoologico",
+      "previousItemAria": "Elemento anterior",
+      "nextItemAria": "Siguiente elemento",
+      "goToItemAria": "Ir al elemento"
+    },
+    "home": {
+      "zooName": "Zoológico Regional Miguel Álvarez del Toro",
+      "hero": {
+        "title": "Descubre la Fauna de Chiapas",
+        "subtitle": "Un espacio dedicado a la conservación, donde podrás conocer de cerca a las especies nativas en un entorno que simula su hábitat natural.",
+        "planVisit": "Planear Visita",
+        "exploreCatalog": "Explorar Catálogo"
+      },
+      "highlights": {
+        "speciesTitle": "50+ Especies",
+        "speciesDesc": "Fauna nativa de Chiapas",
+        "conservationTitle": "Conservación",
+        "conservationDesc": "Protegemos especies en peligro",
+        "educationTitle": "Educación",
+        "educationDesc": "Programas educativos para todas las edades"
+      },
+      "featured": {
+        "title": "Especies Destacadas",
+        "subtitle": "Conoce algunos de nuestros habitantes más emblemáticos que protegemos en el zoológico.",
+        "viewAll": "Ver catalogo completo"
+      },
+      "status": {
+        "EnPeligro": "En Peligro",
+        "Amenazada": "Amenazada"
+      },
+      "visit": {
+        "title": "Planifica tu recorrido",
+        "subtitle": "Estamos abiertos de martes a domingo. Ven y vive una experiencia educativa inmersiva para toda la familia.",
+        "openingTitle": "Horario de apertura",
+        "openingHours": "Martes a Domingo: 9:00 - 17:00",
+        "locationTitle": "Ubicación",
+        "location": "Calzada Cerro Hueco, Tuxtla Gutiérrez",
+        "admissionTitle": "Admisión",
+        "admission": "Entrada general: $30 MXN",
+        "moreDetails": "Más Detalles"
+      },
+      "conservation": {
+        "title": "Comprometidos con la Vida",
+        "description": "El ZooMAT es más que un lugar de exhibición; es un centro de conservación enfocado en proteger nuestra biodiversidad a través de programas de reproducción, rehabilitación y educación ambiental.",
+        "cta": "Descubre cómo apoyar"
+      }
+    },
+    "pages": {
+      "visit": {
+        "header": {
+          "title": "Planea tu Visita",
+          "subtitle": "Toda la informacion que necesitas para disfrutar tu dia en el ZooMAT"
+        },
+        "sections": {
+          "schedule": "Horarios",
+          "prices": "Precios de Entrada",
+          "location": "Ubicacion",
+          "recommendations": "Recomendaciones para tu Visita"
+        },
+        "schedule": {
+          "tueSun": {
+            "day": "Martes a Domingo",
+            "hours": "9:00 - 17:00",
+            "note": "Ultimo acceso: 16:00"
+          },
+          "monday": {
+            "day": "Lunes",
+            "hours": "Cerrado",
+            "note": "Excepto dias festivos"
+          }
+        },
+        "prices": {
+          "adults": { "type": "Adultos", "description": "Mayores de 12 anos" },
+          "children": { "type": "Ninos", "description": "De 3 a 12 anos" },
+          "students": { "type": "Estudiantes", "description": "Con credencial vigente" },
+          "seniors": { "type": "Adultos Mayores", "description": "Mayores de 60 anos" },
+          "under3": { "type": "Menores de 3 anos", "price": "Gratis", "description": "Entrada sin costo" }
+        },
+        "payment": {
+          "title": "Metodos de Pago",
+          "description": "Aceptamos efectivo y tarjetas de credito/debito"
+        },
+        "location": {
+          "addressTitle": "Direccion",
+          "byCarTitle": "Como Llegar en Auto",
+          "byCarDescription": "Ubicado a 8 km del centro de Tuxtla Gutierrez por la Calzada Cerro Hueco. Estacionamiento gratuito disponible.",
+          "publicTransportTitle": "Transporte Publico",
+          "publicTransportDescription": "Toma las rutas de camion que van hacia Cerro Hueco o El Zapotal. Pregunta al conductor por la parada del ZooMAT.",
+          "mapTitle": "Mapa Interactivo"
+        },
+        "recommendations": {
+          "items": [
+            "Usa ropa y calzado comodo para caminar",
+            "Lleva protector solar y repelente de insectos",
+            "Trae agua y snacks (no se permite alimentar a los animales)",
+            "Respeta las senalizaciones y no cruces las barreras",
+            "Manten limpio el zoologico usando los botes de basura",
+            "No uses flash al tomar fotografias"
+          ]
+        },
+        "groups": {
+          "title": "Visitas Grupales y Escolares",
+          "subtitle": "Ofrecemos tours guiados y programas educativos para grupos escolares y organizaciones.",
+          "items": [
+            "Tours educativos con guias especializados",
+            "Descuentos especiales para grupos de mas de 20 personas",
+            "Talleres y actividades interactivas",
+            "Reservaciones con anticipacion requeridas"
+          ],
+          "bookingTitle": "Para reservar tu visita grupal:",
+          "bookingContact": "Contacta al departamento de educacion"
+        },
+        "notice": {
+          "title": "Importante",
+          "items": [
+            "No esta permitido introducir alimentos para los animales",
+            "Prohibido fumar dentro de las instalaciones",
+            "No se permite el ingreso de mascotas",
+            "Los horarios pueden cambiar en dias festivos"
+          ]
+        }
+      },
+      "map": {
+        "header": {
+          "title": "Mapa del ZooMAT",
+          "subtitle": "Descubre las diferentes zonas y servicios de nuestro zoologico"
+        },
+        "sections": {
+          "generalPlan": "Plano General",
+          "thematicZones": "Zonas Tematicas",
+          "services": "Servicios e Instalaciones",
+          "pointsOfInterest": "Puntos de Interes Especiales"
+        },
+        "interactive": {
+          "title": "Mapa Interactivo del ZooMAT",
+          "description": "El zoologico cuenta con 6 zonas tematicas distribuidas en 100 hectareas de area natural protegida"
+        },
+        "featuredSpecies": "Especies destacadas",
+        "approxDuration": "Duracion aproximada",
+        "zones": {
+          "felines": { "name": "Zona de Felinos", "location": "Entrada Norte", "animals": ["Jaguar", "Ocelote", "Tigrillo"] },
+          "aviary": { "name": "Aviario Tropical", "location": "Zona Central", "animals": ["Guacamaya Roja", "Tucan Pico Iris", "Aguila Arpia"] },
+          "primates": { "name": "Primates", "location": "Zona Este", "animals": ["Mono Arana", "Mono Aullador", "Mono Capuchino"] },
+          "reptiles": { "name": "Reptiles y Anfibios", "location": "Zona Sur", "animals": ["Cocodrilo de Pantano", "Boa Constrictor", "Tortuga Casquito"] },
+          "herbivores": { "name": "Herbivoros", "location": "Zona Oeste", "animals": ["Tapir", "Venado Cola Blanca", "Pecari"] },
+          "aquatic": { "name": "Zona Acuatica", "location": "Lago Central", "animals": ["Nutria", "Patos", "Garzas"] }
+        },
+        "facilities": [
+          { "name": "Cafeteria", "description": "Snacks y bebidas" },
+          { "name": "Tienda de Souvenirs", "description": "Recuerdos del ZooMAT" },
+          { "name": "Primeros Auxilios", "description": "Atencion medica basica" },
+          { "name": "Centro de Informacion", "description": "Mapas y guias" }
+        ],
+        "highlights": {
+          "trail": {
+            "title": "Sendero Interpretativo",
+            "description": "Recorrido educativo de 2 km que atraviesa las principales zonas del zoologico",
+            "duration": "45-60 minutos"
+          },
+          "viewpoint": {
+            "title": "Mirador Panoramico",
+            "description": "Vista espectacular del zoologico y la Selva El Zapotal",
+            "duration": "10 minutos"
+          }
+        },
+        "tips": {
+          "title": "Consejos para tu Recorrido",
+          "items": [
+            "El recorrido completo toma aproximadamente 2.5 a 3 horas",
+            "Recomendamos iniciar por la Zona de Felinos (cerca de la entrada)",
+            "Las mejores horas para ver a los animales activos son temprano en la manana (9-11 AM)",
+            "Hay banos disponibles cerca de cada zona principal",
+            "Todos los senderos son accesibles para sillas de ruedas y carriolas",
+            "Solicita un mapa impreso gratuito en el Centro de Informacion"
+          ]
+        }
+      },
+      "contact": {
+        "header": {
+          "title": "Contacto",
+          "subtitle": "Estamos aqui para ayudarte. Contactanos para cualquier consulta"
+        },
+        "form": {
+          "title": "Envianos un Mensaje",
+          "nameLabel": "Nombre Completo *",
+          "namePlaceholder": "Tu nombre",
+          "emailLabel": "Email *",
+          "emailPlaceholder": "tu@email.com",
+          "subjectLabel": "Asunto *",
+          "messageLabel": "Mensaje *",
+          "messagePlaceholder": "Escribe tu mensaje aqui...",
+          "submit": "Enviar Mensaje",
+          "submitSuccess": "Gracias por tu mensaje. Te contactaremos pronto.",
+          "subjectOptions": {
+            "default": "Selecciona un asunto",
+            "info": "Informacion General",
+            "schoolVisit": "Visita Escolar",
+            "donations": "Donaciones",
+            "volunteer": "Voluntariado",
+            "feedback": "Quejas y Sugerencias",
+            "other": "Otro"
+          }
+        },
+        "info": {
+          "phone": { "title": "Telefono", "detail": "Lun-Vie 9:00-17:00" },
+          "email": { "title": "Email", "detail": "Respuesta en 24-48 horas" },
+          "address": { "title": "Direccion" },
+          "hours": { "title": "Horario de Atencion", "detail1": "Mar-Dom: 9:00-17:00", "detail2": "Cerrado los lunes" }
+        },
+        "social": {
+          "title": "Siguenos en Redes Sociales",
+          "caption": "Comparte tus fotos con #ZooMAT"
+        },
+        "departments": {
+          "title": "Departamentos Especializados",
+          "education": { "name": "Educacion Ambiental", "description": "Visitas escolares y programas educativos" },
+          "donations": { "name": "Donaciones y Adopciones", "description": "Apoya la conservacion de nuestros animales" },
+          "admin": { "name": "Administracion", "description": "Informacion general y administrativa" }
+        },
+        "support": {
+          "title": "Apoya al ZooMAT",
+          "description": "Tu apoyo es fundamental para continuar nuestra labor de conservacion y educacion. Puedes contribuir mediante donaciones, adopciones simbolicas de animales o siendo voluntario.",
+          "cta": "Conoce Como Ayudar"
+        }
+      }
+    },
+    "infoSection": {
+      "mapTitle": "Mapa de ubicacion",
+      "openInMaps": "Abrir en Google Maps",
+      "openNow": "Abierto",
+      "closedNow": "Cerrado",
+      "lastEntryIn": "Ultima entrada en {time}",
+      "lastEntryClosed": "Ultima entrada cerrada",
+      "closesIn": "Cierra en {time}",
+      "reopensAt": "Reabre a las {time}"
+    },
+    "footer": {
+      "about": "Comprometidos con la conservacion de la vida silvestre y la educacion ambiental desde 1985.",
+      "quickLinks": "Enlaces Rapidos",
+      "followUs": "Siguenos",
+      "rightsReserved": "Todos los derechos reservados."
+    },
+    "notFound": {
+      "title": "Pagina no encontrada",
+      "message": "La direccion que escribiste no existe en este sitio.",
+      "goHome": "Ir al inicio"
+    },
+    "routeError": {
+      "routeNotFound": "No encontramos la ruta que intentaste abrir.",
+      "unexpectedError": "Error inesperado",
+      "somethingWentWrong": "Algo salio mal",
+      "loadProblem": "Ocurrio un problema al cargar la pagina.",
+      "backHome": "Volver al inicio"
+    },
+    "animalCard": {
+      "mediaUnavailable": "Media no disponible",
+      "habitatLabel": "Habitat",
+      "dietLabel": "Dieta",
+      "funFactLabel": "Curiosidades",
+      "viewMore": "Ver detalles"
+    },
+    "animalsPage": {
+      "title": "Nuestros Animales",
+      "subtitle": "Explora la increible diversidad de fauna nativa de Chiapas a traves de nuestro catalogo interactivo.",
+      "searchPlaceholder": "Buscar especie por nombre comun o cientifico...",
+      "categoryLabel": "Categoria",
+      "statusLabel": "Estado de Conservacion",
+      "showing": "Mostrando",
+      "results": "resultados",
+      "noResults": "No se encontraron animales con los filtros seleccionados.",
+      "clearFilters": "Limpiar Filtros",
+      "categories": {
+        "all": "Todos",
+        "mammal": "Mamifero",
+        "bird": "Ave",
+        "reptile": "Reptil"
+      },
+      "statuses": {
+        "all": "Todos",
+        "endangered": "En Peligro de Extincion",
+        "threatened": "Amenazada",
+        "specialProtection": "Protegida Especial"
+      }
+    },
+    "animalPanel": {
+      "closePanelAria": "Cerrar ficha de la especie",
+      "mediaError": "No se pudo mostrar este contenido.",
+      "audioTitle": "AUDIO DE LA ESPECIE",
+      "audioDirectError": "No se pudo reproducir el audio directamente desde este enlace.",
+      "browserNoAudio": "Tu navegador no soporta audio HTML5.",
+      "openAudio": "Abrir audio",
+      "noAudioMessage": "Esta especie no tiene un archivo de audio cargado todavia. Puedes escuchar una narracion automatica con su informacion.",
+      "stopNarration": "Detener narracion",
+      "listenNarration": "Escuchar narracion",
+      "features": "CARACTERISTICAS",
+      "activity": "ACTIVIDAD",
+      "feeding": "ALIMENTACION",
+      "size": "TAMANO",
+      "weight": "PESO",
+      "lifespan": "ESPERANZA DE VIDA",
+      "aboutSpecies": "SOBRE ESTA ESPECIE",
+      "aboutFallback": "Informacion detallada sobre esta especie se encuentra en proceso de actualizacion.",
+      "distribution": "DISTRIBUCION",
+      "naturalHabitat": "Habitat natural",
+      "importance": "IMPORTANCIA",
+      "importanceFallback": "Son importantes para la dispersion de semillas y el mantenimiento de los ecosistemas.",
+      "threats": "AMENAZAS",
+      "funFacts": "DATOS CURIOSOS",
+      "conservationStatus": "ESTADO DE CONSERVACION",
+      "footerMessage": "Comprometidos con la conservacion y educacion sobre la vida silvestre",
+      "notSpecified": "No especificado",
+      "variedDiet": "Variada"
+    },
+    "qr": {
+      "scanTitle": "Escanear Código QR",
+      "scanDescription": "Usa tu cámara para escanear un código QR desde los puntos de información del zoológico",
+      "startScanning": "Comenzar Escaneo",
+      "stopScanning": "Detener Escaneo",
+      "generatorTitle": "Generar Código QR",
+      "downloadQR": "Descargar Código QR",
+      "error": "Error al inicializar el escáner QR",
+      "errorPermission": "Permiso de cámara denegado. Por favor habilítalo en la configuración de tu navegador.",
+      "errorNoCamera": "No se encontró dispositivo de cámara",
+      "speciesNotFound": "Especie no encontrada",
+      "invalidQR": "Código QR inválido",
+      "scanning": "Escaneando...",
+      "scanned": "¡Código QR escaneado exitosamente!",
+      "loading": "Cargando información de la especie..."
+    }
+    ,
+    "admin": {
+      "title": "Administradores",
+      "inviteButton": "Invitar Admin",
+      "permissionsTitle": "Sobre los permisos",
+      "permissionsText": "Los Super Admins pueden modificar la configuración del sitio y agregar a otros administradores. Los Editores solo pueden gestionar el catálogo de animales.",
+      "loading": "Cargando administradores...",
+      "table": {
+        "name": "Nombre",
+        "email": "Correo Electrónico",
+        "role": "Rol",
+        "actions": "Acciones"
+      },
+      "modalTitle": "Invitar Administrador",
+      "usernameLabel": "Nombre de Usuario *",
+      "emailLabel": "Correo Electrónico *",
+      "roleLabel": "Rol *",
+      "role": {
+        "editor": "Editor",
+        "super": "Super Admin"
+      },
+      "inviteNote": "Se enviará una invitación al correo electrónico con instrucciones para activar la cuenta.",
+      "cancel": "Cancelar",
+      "invite": "Invitar",
+      "confirmDelete": "¿Está seguro de que desea revocar acceso a este administrador?",
+      "msgCreateSuccess": "Administrador creado correctamente",
+      "msgCreateError": "Error al crear administrador",
+      "msgDeleteSuccess": "Acceso revocado correctamente",
+      "msgDeleteError": "Error al revocar acceso",
+      "revokeTitle": "Revocar Acceso",
+      "loadingError": "Error al cargar administradores",
+      "animals": {
+        "title": "Gestión de Especies",
+        "newButton": "Nueva Especie",
+        "searchPlaceholder": "Buscar especie...",
+        "loading": "Cargando especies...",
+        "noneFound": "No se encontraron especies.",
+        "modalNewTitle": "Nueva Especie",
+        "modalEditTitle": "Editar Especie",
+        "label": {
+          "commonName": "Nombre Común *",
+          "scientificName": "Nombre Científico *",
+          "habitat": "Hábitat",
+          "conservation": "Estado de Conservación",
+          "diet": "Dieta",
+          "lifespan": "Esperanza de Vida",
+          "activity": "Actividad",
+          "size": "Tamaño",
+          "weight": "Peso",
+          "distribution": "Distribución",
+          "imageUrl": "URL de Imagen",
+          "description": "Descripción"
+        },
+        "qr": {
+          "title": "Gestión de QR",
+          "description": "Código QR permanente para acceder a la ficha de esta especie",
+          "labelId": "ID de Especie",
+          "idDescription": "Identificador único de esta especie",
+          "labelType": "QR Tipo",
+          "typePermanent": "Permanente",
+          "typeDesc": "No expira, válido indefinidamente",
+          "previewTitle": "Vista Previa del Código QR",
+          "printNote": "Código QR de alta calidad para impresión",
+          "labelUrl": "URL Permanente",
+          "urlDesc": "URL a la que apunta el código QR. Los visitantes accederán a la ficha de {{name}}",
+          "thisSpecies": "esta especie",
+          "tip": "Este código QR nunca expirará y siempre apuntará a la información más reciente de esta especie.",
+          "downloadPng": "Descargar PNG",
+          "downloadQr": "Descargar QR"
+        },
+        "cancel": "Cancelar",
+        "create": "Crear",
+        "update": "Actualizar",
+        "msgCreateSuccess": "Especie creada correctamente",
+        "msgUpdateSuccess": "Especie actualizada correctamente",
+        "msgSaveError": "Error al guardar la especie",
+        "msgDeleteSuccess": "Especie eliminada correctamente",
+        "msgDeleteError": "Error al eliminar la especie",
+        "errorLoad": "No se pudieron cargar las especies"
+      },
+      "dashboard": {
+        "title": "Dashboard",
+        "speciesRegistered": "Especies Registradas",
+        "admins": "Administradores",
+        "monthlyVisits": "Visitas Mensuales",
+        "systemAlerts": "Alertas del Sistema",
+        "recentActivity": "Actividad Reciente",
+        "noRecentActivity": "Ninguna actividad reciente aún.",
+        "quickActions": "Acciones Rápidas",
+        "addSpecies": "Añadir nueva especie",
+        "inviteAdmin": "Invitar a un administrador"
+      }
+    }
+  },
+  "dynamicFromEs": {}
+}
