@@ -5,6 +5,7 @@ import { AnimalCard } from "../components/AnimalCard";
 
 const allAnimals = [
   {
+    id: "jaguar",
     name: "Jaguar",
     scientificName: "Panthera onca",
     image:
@@ -17,6 +18,7 @@ const allAnimals = [
     category: "Mamifero"
   },
   {
+    id: "tucan-pico-iris",
     name: "Tucan Pico Iris",
     scientificName: "Ramphastos sulfuratus",
     image:
@@ -29,6 +31,7 @@ const allAnimals = [
     category: "Ave"
   },
   {
+    id: "tapir-centroamericano",
     name: "Tapir Centroamericano",
     scientificName: "Tapirus bairdii",
     image:
@@ -41,6 +44,7 @@ const allAnimals = [
     category: "Mamifero"
   },
   {
+    id: "mono-arana",
     name: "Mono Arana",
     scientificName: "Ateles geoffroyi",
     image:
@@ -53,6 +57,7 @@ const allAnimals = [
     category: "Mamifero"
   },
   {
+    id: "guacamaya-roja",
     name: "Guacamaya Roja",
     scientificName: "Ara macao",
     image:
@@ -65,6 +70,7 @@ const allAnimals = [
     category: "Ave"
   },
   {
+    id: "cocodrilo-pantano",
     name: "Cocodrilo de Pantano",
     scientificName: "Crocodylus moreletii",
     image:
