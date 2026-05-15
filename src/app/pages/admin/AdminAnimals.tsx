@@ -1,8 +1,70 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from 'react-i18next';
-import { Plus, Edit2, Trash2, Search, X, AlertCircle, CheckCircle, Download } from "lucide-react";
-import QRCode from 'qrcode.react';
-import { speciesService, Species } from "../../services/speciesService";
+import { Plus, Edit2, Trash2, Search, X, AlertCircle, CheckCircle } from "lucide-react";
+
+// Datos locales de animales
+const localAnimals = [
+  {
+    id: '1',
+    name: 'Jaguar',
+    species: 'Panthera onca',
+    habitat: 'Selvas tropicales y bosques humedos de Chiapas',
+    imageUrl: 'https://images.unsplash.com/photo-1649642229170-9ef79251c0e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxqYWd1YXIlMjB3aWxkbGlmZSUyMG1leGljb3xlbnwxfHx8fDE3NzQ1ODUzNzl8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    conservation: 'En Peligro de Extincion',
+    description: 'El jaguar es el felino más grande de América.',
+    diet: 'Carnivoro: pecaries, venados, tapires, aves y reptiles',
+  },
+  {
+    id: '2',
+    name: 'Tucan Pico Iris',
+    species: 'Ramphastos sulfuratus',
+    habitat: 'Selva tropical humeda',
+    imageUrl: 'https://images.unsplash.com/photo-1618191702724-1e413e177fde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b3VjYW4lMjBiaXJkJTIwdHJvcGljYWx8ZW58MXx8fHwxNzc0NTg1Mzc5fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    conservation: 'Amenazada',
+    description: 'El tucán es una ave tropical colorida.',
+    diet: 'Omnivoro: frutas, insectos y pequenos vertebrados',
+  },
+  {
+    id: '3',
+    name: 'Tapir Centroamericano',
+    species: 'Tapirus bairdii',
+    habitat: 'Bosques tropicales y humedales',
+    imageUrl: 'https://images.unsplash.com/photo-1771253085305-f90f40feaad6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0YXBpciUyMHdpbGRsaWZlfGVufDF8fHx8MTc3NDU4NTM4MHww&ixlib=rb-4.1.0&q=80&w=1080',
+    conservation: 'En Peligro de Extincion',
+    description: 'El tapir es un mamífero de gran tamaño.',
+    diet: 'Herbivoro: hojas, frutas y plantas acuaticas',
+  },
+  {
+    id: '4',
+    name: 'Mono Arana',
+    species: 'Ateles geoffroyi',
+    habitat: 'Selvas tropicales del sureste mexicano',
+    imageUrl: 'https://images.unsplash.com/photo-1586492633743-d4477f713f3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcGlkZXIlMjBtb25rZXklMjBwcmltYXRlfGVufDF8fHx8MTc3NDU4NTM4MHww&ixlib=rb-4.1.0&q=80&w=1080',
+    conservation: 'En Peligro de Extincion',
+    description: 'El mono araña es ágil y tiene una cola prensil.',
+    diet: 'Omnivoro: frutas, flores, semillas e insectos',
+  },
+  {
+    id: '5',
+    name: 'Guacamaya Roja',
+    species: 'Ara macao',
+    habitat: 'Selvas tropicales humedas',
+    imageUrl: 'https://images.unsplash.com/photo-1561236902-c0a10c2391a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzY2FybGV0JTIwbWFjYXclMjBwYXJyb3R8ZW58MXx8fHwxNzc0NTg1MzgwfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    conservation: 'Amenazada',
+    description: 'La guacamaya roja es una ave colorida y longeva.',
+    diet: 'Herbivoro: frutas, nueces, semillas y flores',
+  },
+  {
+    id: '6',
+    name: 'Cocodrilo de Pantano',
+    species: 'Crocodylus moreletii',
+    habitat: 'Rios, lagos y pantanos',
+    imageUrl: 'https://images.unsplash.com/photo-1600333489678-6c6a1f0269a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm9jb2RpbGUlMjByZXB0aWxlfGVufDF8fHx8MTc3NDU4NTM4MXww&ixlib=rb-4.1.0&q=80&w=1080',
+    conservation: 'Protegida Especial',
+    description: 'El cocodrilo es un reptil depredador.',
+    diet: 'Carnivoro: peces, aves y pequenos mamiferos',
+  }
+];
 
 interface FormData {
   slug: string;
@@ -20,16 +82,26 @@ interface FormData {
   distribution: string;
 }
 
+interface AnimalData {
+  id: string;
+  name: string;
+  species: string;
+  habitat: string;
+  imageUrl: string;
+  conservation: string;
+  description: string;
+  diet: string;
+}
+
 export function AdminAnimals() {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
-  const [animals, setAnimals] = useState<Species[]>([]);
+  const [animals, setAnimals] = useState<AnimalData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [qrRef, setQrRef] = useState<HTMLDivElement | null>(null);
   const [formData, setFormData] = useState<FormData>({
     slug: '',
     name: '',
@@ -46,32 +118,16 @@ export function AdminAnimals() {
     distribution: '',
   });
 
-  // Cargar animales del API
+  // Cargar animales
   useEffect(() => {
     loadAnimals();
   }, []);
 
-  const loadAnimals = async () => {
+  const loadAnimals = () => {
     try {
       setLoading(true);
-      const result = await speciesService.getAll();
-      // Mapear propiedades del backend al formato esperado por el componente
-      const mapped = result.data.map((animal: any) => ({
-        id: animal.id,
-        name: animal.name,
-        scientificName: animal.species, // El backend usa 'species' para el nombre científico
-        habitat: animal.habitat,
-        image: animal.imageUrl,
-        conservation: animal.conservation,
-        description: animal.description,
-        diet: animal.diet,
-        lifespan: animal.lifespan,
-        activity: animal.activity,
-        size: animal.size,
-        weight: animal.weight,
-        distribution: animal.distribution,
-      }));
-      setAnimals(mapped);
+      // Usar datos locales
+      setAnimals(localAnimals);
       setError(null);
     } catch (err) {
       setError(t('ui.admin.animals.errorLoad') as string || 'No se pudieron cargar las especies');
@@ -81,23 +137,23 @@ export function AdminAnimals() {
     }
   };
 
-  const handleOpenModal = (animal?: Species) => {
+  const handleOpenModal = (animal?: AnimalData) => {
     if (animal) {
       setEditingId(animal.id?.toString() || null);
       setFormData({
         slug: '',
         name: animal.name || '',
-        species: animal.scientificName || '',
+        species: animal.species || '',
         habitat: animal.habitat || '',
-        imageUrl: animal.image || '',
+        imageUrl: animal.imageUrl || '',
         conservation: animal.conservation || '',
         description: animal.description || '',
         diet: animal.diet || '',
-        lifespan: animal.lifespan || '',
-        activity: animal.activity || '',
-        size: animal.size || '',
-        weight: animal.weight || '',
-        distribution: animal.distribution || '',
+        lifespan: '',
+        activity: '',
+        size: '',
+        weight: '',
+        distribution: '',
       });
     } else {
       setEditingId(null);

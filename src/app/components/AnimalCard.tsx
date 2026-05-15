@@ -1,11 +1,8 @@
-import { X, Volume2, Leaf, Weight, Heart, Play, Square, Languages, QrCode } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { X, Volume2, Leaf, Weight, Heart, Play, Square, Languages } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import QRCode from 'qrcode.react';
-import { Download } from 'lucide-react';
 
 interface AnimalCardProps {
-  id?: string;
   name: string;
   scientificName: string;
   image: string;
@@ -27,7 +24,6 @@ interface AnimalCardProps {
 }
 
 export function AnimalCard({
-  id,
   name,
   scientificName,
   image,
@@ -50,7 +46,6 @@ export function AnimalCard({
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const qrRef = useRef<HTMLDivElement>(null);
   const currentLanguage = (i18n.resolvedLanguage || i18n.language || 'es').startsWith('es') ? 'es' : 'en';
 
   const toggleLanguage = () => {
@@ -133,35 +128,6 @@ export function AnimalCard({
     }
   };
 
-  const downloadQRCode = () => {
-    const svg = qrRef.current?.querySelector('svg');
-    if (!svg) return;
-
-    const canvas = document.createElement('canvas');
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const img = new Image();
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
-
-    img.onload = () => {
-      canvas.width = svg.clientWidth;
-      canvas.height = svg.clientHeight;
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = `qr-${name.replace(/\s+/g, '-').toLowerCase()}.png`;
-        link.click();
-      }
-      URL.revokeObjectURL(url);
-    };
-
-    img.src = url;
-  };
-
   if (isOpen) {
     return (
       <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-start md:justify-center md:p-4 overflow-y-auto">
@@ -242,35 +208,6 @@ export function AnimalCard({
                     )}
                   </button>
                 </div>
-
-                {/* QR Code */}
-                {id && (
-                  <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
-                    <div className="flex items-center gap-2 mb-3">
-                      <QrCode size={18} className="text-gray-700 flex-shrink-0" />
-                      <h3 className="font-bold text-gray-900 text-sm uppercase">
-                        Código QR
-                      </h3>
-                    </div>
-                    <div ref={qrRef} className="flex justify-center mb-3 p-2 bg-gray-50 rounded">
-                      <QRCode
-                        value={`${window.location.origin}${window.location.pathname}?animal=${id}`}
-                        size={120}
-                        level="H"
-                        includeMargin={true}
-                        fgColor="#000000"
-                        bgColor="#ffffff"
-                      />
-                    </div>
-                    <button
-                      onClick={downloadQRCode}
-                      className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded text-xs md:text-sm font-semibold transition"
-                    >
-                      <Download size={14} />
-                      <span className="hidden md:inline">Descargar QR</span>
-                    </button>
-                  </div>
-                )}
 
                 {/* Características */}
                 <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
