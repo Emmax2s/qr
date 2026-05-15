@@ -566,7 +566,7 @@ export function AdminAnimals() {
                         className="p-4 bg-white border-4 border-gray-300 rounded-lg shadow-md"
                       >
                         <QRCode
-                          value={`${window.location.origin}/animales?id=${editingId || 'nuevo'}`}
+                          value={`${window.location.origin}/?/animales&id=${editingId || 'nuevo'}`}
                           size={250}
                           level="H"
                           includeMargin={true}
@@ -582,7 +582,7 @@ export function AdminAnimals() {
                           <label className="block text-xs font-semibold text-gray-500 uppercase mb-2">{t('ui.admin.animals.qr.labelUrl')}</label>
                           <div className="bg-gray-50 p-3 rounded border border-gray-300 break-all">
                             <code className="text-xs text-gray-700">
-                              {`${window.location.origin}/animales?id=${editingId || 'nuevo'}`}
+                              {`${window.location.origin}/?/animales&id=${editingId || 'nuevo'}`}
                             </code>
                           </div>
                           <p className="text-xs text-gray-500 mt-2">{t('ui.admin.animals.qr.urlDesc', { name: formData.name || t('ui.admin.animals.qr.thisSpecies') })}</p>

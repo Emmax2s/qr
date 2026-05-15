@@ -85,26 +85,28 @@ export function Animals() {
   const [selectedStatus, setSelectedStatus] = useState<string>("Todos");
   const [selectedAnimalIndex, setSelectedAnimalIndex] = useState<number | null>(null);
 
-  // Detectar parámetro ?id= en la URL
+  // Detectar parámetro ?id= o &id= en la URL
   useEffect(() => {
-    // Intentar obtener el parámetro de diferentes formas (por si hay enrutamiento SPA)
+    // Intentar obtener el parámetro de diferentes formas
     let idParam = null;
     
     // Primera opción: window.location.search
     let params = new URLSearchParams(window.location.search);
     idParam = params.get('id');
     
-    // Segunda opción: si está en el hash (enrutamiento SPA)
-    if (!idParam && window.location.hash) {
-      const hashParams = new URLSearchParams(window.location.hash.split('?')[1]);
-      idParam = hashParams.get('id');
-    }
-    
-    // Tercera opción: buscar en toda la URL
+    // Segunda opción: buscar en toda la URL (para &id=)
     if (!idParam) {
-      const urlMatch = window.location.href.match(/[\?&]id=(\d+)/);
+      const urlMatch = window.location.href.match(/&id=(\d+)/);
       if (urlMatch) {
         idParam = urlMatch[1];
+      }
+    }
+    
+    // Tercera opción: si está en el hash (enrutamiento SPA)
+    if (!idParam && window.location.hash) {
+      const hashMatch = window.location.hash.match(/&id=(\d+)/);
+      if (hashMatch) {
+        idParam = hashMatch[1];
       }
     }
     
