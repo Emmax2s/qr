@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from 'react-i18next';
-import { Plus, Edit2, Trash2, Search, X, AlertCircle, CheckCircle } from "lucide-react";
+import { Plus, Edit2, Trash2, Search, X, AlertCircle, CheckCircle, Download } from "lucide-react";
+import QRCode from 'qrcode.react';
 
 // Datos locales de animales
 const localAnimals = [
@@ -95,6 +96,7 @@ interface AnimalData {
 
 export function AdminAnimals() {
   const { t } = useTranslation();
+  const qrRef = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [animals, setAnimals] = useState<AnimalData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -242,6 +244,37 @@ export function AdminAnimals() {
         console.error(err);
       }
     }
+  };
+
+  const downloadQRCode = () => {
+    if (!qrRef.current) return;
+
+    const svg = qrRef.current.querySelector('svg');
+    if (!svg) return;
+
+    const canvas = document.createElement('canvas');
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const img = new Image();
+    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
+
+    img.onload = () => {
+      canvas.width = svg.clientWidth;
+      canvas.height = svg.clientHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = `qr-${formData.name.replace(/\s+/g, '-')}.png`;
+        link.click();
+      }
+      URL.revokeObjectURL(url);
+    };
+
+    img.src = url;
   };
 
 
@@ -486,6 +519,104 @@ export function AdminAnimals() {
                   rows={4}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
+              </div>
+
+              {/* QR Code Section */}
+              <div className="border-t border-gray-300 pt-6 mt-6">
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-2 border-green-200 p-6">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">{t('ui.admin.animals.qr.title')}</h3>
+                      <p className="text-sm text-gray-600">{t('ui.admin.animals.qr.description')}</p>
+                    </div>
+                  </div>
+
+                  {/* QR ID Section */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="bg-white rounded-lg p-4 border border-gray-200">
+                      <label className="block text-xs font-semibold text-gray-500 uppercase mb-2">{t('ui.admin.animals.qr.labelId')}</label>
+                      <div className="text-3xl font-bold text-green-600">
+                        {editingId || 'Nuevo'}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">{t('ui.admin.animals.qr.idDescription')}</p>
+                    </div>
+
+                    <div className="bg-white rounded-lg p-4 border border-gray-200">
+                      <label className="block text-xs font-semibold text-gray-500 uppercase mb-2">{t('ui.admin.animals.qr.labelType')}</label>
+                      <div className="text-lg font-bold text-green-600 flex items-center gap-2">
+                        <span className="w-3 h-3 bg-green-600 rounded-full"></span>
+                        {t('ui.admin.animals.qr.typePermanent')}
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">{t('ui.admin.animals.qr.typeDesc')}</p>
+                    </div>
+                  </div>
+
+                  {/* QR Preview and Download */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* QR Preview */}
+                    <div className="flex flex-col items-center">
+                      <p className="text-sm font-semibold text-gray-700 mb-3">{t('ui.admin.animals.qr.previewTitle')}</p>
+                      <div
+                        ref={qrRef}
+                        className="p-4 bg-white border-4 border-gray-300 rounded-lg shadow-md"
+                      >
+                        <QRCode
+                          value={`${window.location.origin}/animales?id=${editingId || 'nuevo'}`}
+                          size={250}
+                          level="H"
+                          includeMargin={true}
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500 mt-3 text-center">{t('ui.admin.animals.qr.printNote')}</p>
+                    </div>
+
+                    {/* QR Info and Download */}
+                    <div className="flex flex-col justify-between">
+                      <div className="space-y-4">
+                        <div className="bg-white rounded-lg p-4 border border-gray-200">
+                          <label className="block text-xs font-semibold text-gray-500 uppercase mb-2">{t('ui.admin.animals.qr.labelUrl')}</label>
+                          <div className="bg-gray-50 p-3 rounded border border-gray-300 break-all">
+                            <code className="text-xs text-gray-700">
+                              {`${window.location.origin}/animales?id=${editingId || 'nuevo'}`}
+                            </code>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-2">{t('ui.admin.animals.qr.urlDesc', { name: formData.name || t('ui.admin.animals.qr.thisSpecies') })}</p>
+                        </div>
+
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <p className="text-sm text-blue-900">
+                            <span className="font-semibold">💡 Tip:</span> {t('ui.admin.animals.qr.tip')}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Download Buttons */}
+                      <div className="flex flex-col gap-3 pt-4">
+                        <button
+                          type="button"
+                          onClick={downloadQRCode}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold"
+                        >
+                          <Download size={20} />
+                          {t('ui.admin.animals.qr.downloadPng')}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={downloadQRCode}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+                        >
+                          <Download size={20} />
+                          {t('ui.admin.animals.qr.downloadQr')}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
