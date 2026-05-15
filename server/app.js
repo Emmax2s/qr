@@ -1,19 +1,21 @@
 import cors from 'cors';
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { env } from './config/env.js';
 import speciesRoutes from './routes/speciesRoutes.js';
 import siteRoutes from './routes/siteRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const app = express();
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Permitir requests sin origin (como mobile apps o curl requests)
       if (!origin) return callback(null, true);
 
-      // Parsear CORS_ORIGIN que puede contener múltiples valores separados por coma
       const allowedOrigins = env.corsOrigin === '*' 
         ? ['*']
         : env.corsOrigin.split(',').map(o => o.trim());
@@ -35,6 +37,12 @@ app.get('/api/health', async (_req, res) => {
 app.use('/api/species', speciesRoutes);
 app.use('/api/site-content', siteRoutes);
 app.use('/api/admin', adminRoutes);
+
+app.use(express.static(path.join(__dirname, '../dist')));
+
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
 
 app.use((error, _req, res, _next) => {
   const message = error instanceof Error ? error.message : 'Unexpected error';

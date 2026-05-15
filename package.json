@@ -13,6 +13,7 @@
     "build": "vite build",
     "build:frontend": "vite build",
     "start": "node server/index.js",
+    "start:production": "npm run build && node server/index.js",
     "preview": "vite preview"
   },
   "dependencies": {
