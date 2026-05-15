@@ -85,39 +85,23 @@ export function Animals() {
   const [selectedStatus, setSelectedStatus] = useState<string>("Todos");
   const [selectedAnimalIndex, setSelectedAnimalIndex] = useState<number | null>(null);
 
-  // Detectar parámetro ?id= o &id= en la URL
+  // Detectar ID desde URL (formato #/especie/{id})
   useEffect(() => {
-    // Intentar obtener el parámetro de diferentes formas
     let idParam = null;
     
-    // Primera opción: window.location.search
-    let params = new URLSearchParams(window.location.search);
-    idParam = params.get('id');
-    
-    // Segunda opción: buscar en toda la URL (para &id=)
-    if (!idParam) {
-      const urlMatch = window.location.href.match(/&id=(\d+)/);
-      if (urlMatch) {
-        idParam = urlMatch[1];
-      }
-    }
-    
-    // Tercera opción: si está en el hash (enrutamiento SPA)
-    if (!idParam && window.location.hash) {
-      const hashMatch = window.location.hash.match(/&id=(\d+)/);
-      if (hashMatch) {
-        idParam = hashMatch[1];
-      }
+    // Buscar en el hash: /#/especie/{id}
+    const hashMatch = window.location.hash.match(/especie\/(\d+)/);
+    if (hashMatch) {
+      idParam = hashMatch[1];
     }
     
     console.log('URL actual:', window.location.href);
-    console.log('Search:', window.location.search);
     console.log('Hash:', window.location.hash);
     console.log('ID encontrado:', idParam);
     
     if (idParam) {
-      const index = parseInt(idParam) - 1; // IDs son 1-based en el QR
-      console.log('QR ID detectado:', idParam, 'Index calculado:', index, 'Total animales:', allAnimals.length);
+      const index = parseInt(idParam) - 1; // IDs son 1-based
+      console.log('ID detectado:', idParam, 'Index calculado:', index, 'Total animales:', allAnimals.length);
       
       if (index >= 0 && index < allAnimals.length) {
         setSelectedAnimalIndex(index);
