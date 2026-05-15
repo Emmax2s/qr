@@ -87,13 +87,42 @@ export function Animals() {
 
   // Detectar parámetro ?id= en la URL
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const idParam = params.get('id');
+    // Intentar obtener el parámetro de diferentes formas (por si hay enrutamiento SPA)
+    let idParam = null;
+    
+    // Primera opción: window.location.search
+    let params = new URLSearchParams(window.location.search);
+    idParam = params.get('id');
+    
+    // Segunda opción: si está en el hash (enrutamiento SPA)
+    if (!idParam && window.location.hash) {
+      const hashParams = new URLSearchParams(window.location.hash.split('?')[1]);
+      idParam = hashParams.get('id');
+    }
+    
+    // Tercera opción: buscar en toda la URL
+    if (!idParam) {
+      const urlMatch = window.location.href.match(/[\?&]id=(\d+)/);
+      if (urlMatch) {
+        idParam = urlMatch[1];
+      }
+    }
+    
+    console.log('URL actual:', window.location.href);
+    console.log('Search:', window.location.search);
+    console.log('Hash:', window.location.hash);
+    console.log('ID encontrado:', idParam);
     
     if (idParam) {
       const index = parseInt(idParam) - 1; // IDs son 1-based en el QR
+      console.log('QR ID detectado:', idParam, 'Index calculado:', index, 'Total animales:', allAnimals.length);
+      
       if (index >= 0 && index < allAnimals.length) {
         setSelectedAnimalIndex(index);
+        // Limpiar filtros para mostrar el animal correctamente
+        setSearchTerm("");
+        setSelectedCategory("Todos");
+        setSelectedStatus("Todos");
       }
     }
   }, []);
@@ -206,9 +235,11 @@ export function Animals() {
             {filteredAnimals.map((animal, index) => {
               // Encontrar el índice original del animal en allAnimals
               const originalIndex = allAnimals.findIndex(
-                a => a.name === animal.name && a.scientificName === animal.scientificName
+                a => a.name === animal.name
               );
               const shouldBeOpen = selectedAnimalIndex === originalIndex;
+              
+              console.log(`Animal: ${animal.name}, OriginalIndex: ${originalIndex}, ShouldBeOpen: ${shouldBeOpen}, SelectedIndex: ${selectedAnimalIndex}`);
               
               return (
                 <AnimalCard 
