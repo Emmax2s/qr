@@ -2,15 +2,21 @@ import { apiClient } from './api';
 
 export interface Species {
   id: number;
+  slug?: string;
   name: string;
+  species?: string;
   scientificName?: string;
   description?: string;
   image?: string;
+  imageUrl?: string;
   habitat?: string;
   diet?: string;
   size?: string;
   weight?: string;
   lifespan?: string;
+  conservation?: string;
+  activity?: string;
+  distribution?: string;
   threats?: string;
   importance?: string;
   funFacts?: string[];
@@ -20,15 +26,20 @@ export interface Species {
 }
 
 export interface SpeciesCreateInput {
+  slug?: string;
   name: string;
   scientificName?: string;
   description?: string;
   image?: string;
+  imageUrl?: string;
   habitat?: string;
   diet?: string;
   size?: string;
   weight?: string;
   lifespan?: string;
+  conservation?: string;
+  activity?: string;
+  distribution?: string;
   threats?: string;
   importance?: string;
   funFacts?: string[];
@@ -54,6 +65,12 @@ export interface QRScanResponse {
 }
 
 class SpeciesService {
+  private getAdminHeaders(): Record<string, string> {
+    return {
+      'x-admin-key': import.meta.env.VITE_ADMIN_API_KEY || 'zoomat-admin-key',
+    };
+  }
+
   // ============ SPECIES ENDPOINTS ============
 
   async getAll(filters?: {
@@ -76,15 +93,15 @@ class SpeciesService {
   }
 
   async create(data: SpeciesCreateInput): Promise<Species> {
-    return apiClient.post('/species', data);
+    return apiClient.post('/species', data, { headers: this.getAdminHeaders() });
   }
 
   async update(id: number, data: Partial<SpeciesCreateInput>): Promise<Species> {
-    return apiClient.put(`/species/${id}`, data);
+    return apiClient.put(`/species/${id}`, data, { headers: this.getAdminHeaders() });
   }
 
   async delete(id: number): Promise<void> {
-    return apiClient.delete(`/species/${id}`);
+    return apiClient.delete(`/species/${id}`, { headers: this.getAdminHeaders() });
   }
 
   // ============ QR CODE ENDPOINTS ============

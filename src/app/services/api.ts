@@ -31,14 +31,20 @@ class ApiClient {
     return this.token;
   }
 
-  private getHeaders(): Record<string, string> {
-    const headers: Record<string, string> = {
+  private buildHeaders(extraHeaders?: HeadersInit): Headers {
+    const headers = new Headers({
       'Content-Type': 'application/json',
-    };
+    });
 
     const token = localStorage.getItem('authToken');
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    if (extraHeaders) {
+      new Headers(extraHeaders).forEach((value, key) => {
+        headers.set(key, value);
+      });
     }
 
     return headers;
@@ -84,10 +90,11 @@ class ApiClient {
   async get<T>(url: string, options?: RequestOptions): Promise<T> {
     try {
       const fullUrl = this.buildUrl(url, options?.params);
+      const { headers, ...requestOptions } = options || {};
       const response = await fetch(fullUrl, {
         method: 'GET',
-        headers: this.getHeaders(),
-        ...options,
+        headers: this.buildHeaders(headers),
+        ...requestOptions,
       });
       return this.handleResponse<T>(response);
     } catch (error) {
@@ -98,11 +105,12 @@ class ApiClient {
   async post<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T> {
     try {
       const fullUrl = this.buildUrl(url, options?.params);
+      const { headers, ...requestOptions } = options || {};
       const response = await fetch(fullUrl, {
         method: 'POST',
-        headers: this.getHeaders(),
+        headers: this.buildHeaders(headers),
         body: data ? JSON.stringify(data) : undefined,
-        ...options,
+        ...requestOptions,
       });
       return this.handleResponse<T>(response);
     } catch (error) {
@@ -113,11 +121,12 @@ class ApiClient {
   async put<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T> {
     try {
       const fullUrl = this.buildUrl(url, options?.params);
+      const { headers, ...requestOptions } = options || {};
       const response = await fetch(fullUrl, {
         method: 'PUT',
-        headers: this.getHeaders(),
+        headers: this.buildHeaders(headers),
         body: data ? JSON.stringify(data) : undefined,
-        ...options,
+        ...requestOptions,
       });
       return this.handleResponse<T>(response);
     } catch (error) {
@@ -128,11 +137,12 @@ class ApiClient {
   async patch<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T> {
     try {
       const fullUrl = this.buildUrl(url, options?.params);
+      const { headers, ...requestOptions } = options || {};
       const response = await fetch(fullUrl, {
         method: 'PATCH',
-        headers: this.getHeaders(),
+        headers: this.buildHeaders(headers),
         body: data ? JSON.stringify(data) : undefined,
-        ...options,
+        ...requestOptions,
       });
       return this.handleResponse<T>(response);
     } catch (error) {
@@ -143,10 +153,11 @@ class ApiClient {
   async delete<T>(url: string, options?: RequestOptions): Promise<T> {
     try {
       const fullUrl = this.buildUrl(url, options?.params);
+      const { headers, ...requestOptions } = options || {};
       const response = await fetch(fullUrl, {
         method: 'DELETE',
-        headers: this.getHeaders(),
-        ...options,
+        headers: this.buildHeaders(headers),
+        ...requestOptions,
       });
       return this.handleResponse<T>(response);
     } catch (error) {

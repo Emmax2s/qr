@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Plus, Trash2, Mail, ShieldAlert, X } from "lucide-react";
 import { apiClient } from "../../services/api";
 
+const ADMIN_KEY = import.meta.env.VITE_ADMIN_API_KEY || 'zoomat-admin-key';
+
 interface User {
   id: string;
   username: string;
@@ -54,7 +56,7 @@ export function AdminUsers() {
       };
       
       await apiClient.post('/admin/create', payload, {
-        headers: { 'x-admin-key': 'admin-key' }
+        headers: { 'x-admin-key': ADMIN_KEY }
       });
       
       setMessage({ type: 'success', text: t('ui.admin.msgCreateSuccess') });
@@ -74,7 +76,7 @@ export function AdminUsers() {
     
     try {
       await apiClient.delete(`/admin/${userId}`, {
-        headers: { 'x-admin-key': 'admin-key' }
+        headers: { 'x-admin-key': ADMIN_KEY }
       });
       
       setMessage({ type: 'success', text: t('ui.admin.msgDeleteSuccess') });

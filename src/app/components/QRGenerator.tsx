@@ -8,10 +8,10 @@ interface QRGeneratorProps {
 }
 
 export function QRGenerator({ value, animalName }: QRGeneratorProps) {
-  const qrRef = useRef<HTMLDivElement>(null);
+  const qrRef = useRef<HTMLDivElement | null>(null);
 
   const downloadQRCode = () => {
-    const svg = qrRef.current?.querySelector('svg');
+    const svg = qrRef.current?.querySelector('svg') as SVGSVGElement | null;
     if (!svg) return;
 
     const canvas = document.createElement('canvas');

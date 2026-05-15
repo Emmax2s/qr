@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useTranslation } from 'react-i18next';
 import { Plus, Edit2, Trash2, Search, X, AlertCircle, CheckCircle, Download } from "lucide-react";
 import QRCode from 'qrcode.react';
+import { speciesService, type Species } from '../../services/speciesService';
 
 // Datos locales de animales
 const localAnimals = [
@@ -83,20 +84,25 @@ interface FormData {
   distribution: string;
 }
 
-interface AnimalData {
-  id: string;
-  name: string;
-  species: string;
-  habitat: string;
-  imageUrl: string;
-  conservation: string;
-  description: string;
-  diet: string;
-}
+type AnimalData = Species;
+
+const fallbackAnimals: AnimalData[] = localAnimals.map((animal) => ({
+  ...animal,
+  id: Number(animal.id),
+  species: animal.species,
+}));
+
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 
 export function AdminAnimals() {
   const { t } = useTranslation();
-  const qrRef = useRef(null);
+  const qrRef = useRef<HTMLDivElement | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [animals, setAnimals] = useState<AnimalData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -125,14 +131,15 @@ export function AdminAnimals() {
     loadAnimals();
   }, []);
 
-  const loadAnimals = () => {
+  const loadAnimals = async () => {
     try {
       setLoading(true);
-      // Usar datos locales
-      setAnimals(localAnimals);
+      const response = await speciesService.getAll();
+      setAnimals(response.data);
       setError(null);
     } catch (err) {
       setError(t('ui.admin.animals.errorLoad') as string || 'No se pudieron cargar las especies');
+      setAnimals(fallbackAnimals);
       console.error(err);
     } finally {
       setLoading(false);
@@ -143,19 +150,19 @@ export function AdminAnimals() {
     if (animal) {
       setEditingId(animal.id?.toString() || null);
       setFormData({
-        slug: '',
+        slug: animal.slug || slugify(animal.name || ''),
         name: animal.name || '',
-        species: animal.species || '',
+        species: animal.scientificName || animal.species || '',
         habitat: animal.habitat || '',
-        imageUrl: animal.imageUrl || '',
+        imageUrl: animal.imageUrl || animal.image || '',
         conservation: animal.conservation || '',
         description: animal.description || '',
         diet: animal.diet || '',
-        lifespan: '',
-        activity: '',
-        size: '',
-        weight: '',
-        distribution: '',
+        lifespan: animal.lifespan || '',
+        activity: animal.activity || '',
+        size: animal.size || '',
+        weight: animal.weight || '',
+        distribution: animal.distribution || '',
       });
     } else {
       setEditingId(null);
@@ -187,39 +194,27 @@ export function AdminAnimals() {
     e.preventDefault();
     
     try {
+      const payload = {
+        slug: formData.slug || slugify(formData.name),
+        name: formData.name,
+        scientificName: formData.species,
+        habitat: formData.habitat,
+        imageUrl: formData.imageUrl,
+        conservation: formData.conservation,
+        description: formData.description,
+        diet: formData.diet,
+        lifespan: formData.lifespan,
+        activity: formData.activity,
+        size: formData.size,
+        weight: formData.weight,
+        distribution: formData.distribution,
+      };
+
       if (editingId) {
-        // Actualizar
-        await speciesService.update(parseInt(editingId), {
-          name: formData.name,
-          scientificName: formData.species,
-          habitat: formData.habitat,
-          image: formData.imageUrl,
-          conservation: formData.conservation,
-          description: formData.description,
-          diet: formData.diet,
-          lifespan: formData.lifespan,
-          activity: formData.activity,
-          size: formData.size,
-          weight: formData.weight,
-          distribution: formData.distribution,
-        });
+        await speciesService.update(Number(editingId), payload);
         setMessage({ type: 'success', text: t('ui.admin.animals.msgUpdateSuccess') });
       } else {
-        // Crear
-        await speciesService.create({
-          name: formData.name,
-          scientificName: formData.species,
-          habitat: formData.habitat,
-          image: formData.imageUrl,
-          conservation: formData.conservation,
-          description: formData.description,
-          diet: formData.diet,
-          lifespan: formData.lifespan,
-          activity: formData.activity,
-          size: formData.size,
-          weight: formData.weight,
-          distribution: formData.distribution,
-        });
+        await speciesService.create(payload);
         setMessage({ type: 'success', text: t('ui.admin.animals.msgCreateSuccess') });
       }
 
@@ -235,7 +230,7 @@ export function AdminAnimals() {
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de que deseas eliminar esta especie?')) {
       try {
-        await speciesService.delete(parseInt(id));
+        await speciesService.delete(Number(id));
         setMessage({ type: 'success', text: t('ui.admin.animals.msgDeleteSuccess') });
         await loadAnimals();
         setTimeout(() => setMessage(null), 3000);
@@ -249,7 +244,7 @@ export function AdminAnimals() {
   const downloadQRCode = () => {
     if (!qrRef.current) return;
 
-    const svg = qrRef.current.querySelector('svg');
+    const svg = qrRef.current.querySelector('svg') as SVGSVGElement | null;
     if (!svg) return;
 
     const canvas = document.createElement('canvas');
@@ -279,9 +274,14 @@ export function AdminAnimals() {
 
 
 
-  const filteredAnimals = animals.filter(animal => 
-    animal.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredAnimals = animals.filter((animal) => {
+    const query = searchTerm.toLowerCase();
+    const nameMatch = animal.name?.toLowerCase().includes(query);
+    const scientificMatch = animal.scientificName?.toLowerCase().includes(query);
+    const habitatMatch = animal.habitat?.toLowerCase().includes(query);
+
+    return Boolean(nameMatch || scientificMatch || habitatMatch);
+  });
 
   return (
     <div className="space-y-6">
@@ -347,7 +347,7 @@ export function AdminAnimals() {
                 filteredAnimals.map((animal) => (
                   <tr key={animal.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-50 last:border-0">
                     <td className="p-4 font-medium text-gray-900">{animal.name}</td>
-                    <td className="p-4 text-gray-600 text-sm">{animal.scientificName || '-'}</td>
+                    <td className="p-4 text-gray-600 text-sm">{animal.scientificName || animal.species || '-'}</td>
                     <td className="p-4 text-gray-600 text-sm">{animal.habitat || '-'}</td>
                     <td className="p-4 text-right space-x-2">
                       <button 
@@ -541,7 +541,7 @@ export function AdminAnimals() {
                     <div className="bg-white rounded-lg p-4 border border-gray-200">
                       <label className="block text-xs font-semibold text-gray-500 uppercase mb-2">{t('ui.admin.animals.qr.labelId')}</label>
                       <div className="text-3xl font-bold text-green-600">
-                        {editingId || 'Nuevo'}
+                        {editingId || formData.slug || slugify(formData.name) || 'Nuevo'}
                       </div>
                       <p className="text-xs text-gray-500 mt-1">{t('ui.admin.animals.qr.idDescription')}</p>
                     </div>
@@ -566,7 +566,7 @@ export function AdminAnimals() {
                         className="p-4 bg-white border-4 border-gray-300 rounded-lg shadow-md"
                       >
                         <QRCode
-                          value={`${window.location.origin}/#/especie/${editingId || 'nuevo'}`}
+                          value={`${window.location.origin}/#/especie/${editingId || formData.slug || slugify(formData.name) || 'nuevo'}`}
                           size={250}
                           level="H"
                           includeMargin={true}
@@ -582,7 +582,7 @@ export function AdminAnimals() {
                           <label className="block text-xs font-semibold text-gray-500 uppercase mb-2">{t('ui.admin.animals.qr.labelUrl')}</label>
                           <div className="bg-gray-50 p-3 rounded border border-gray-300 break-all">
                             <code className="text-xs text-gray-700">
-                              {`${window.location.origin}/#/especie/${editingId || 'nuevo'}`}
+                              {`${window.location.origin}/#/especie/${editingId || formData.slug || slugify(formData.name) || 'nuevo'}`}
                             </code>
                           </div>
                           <p className="text-xs text-gray-500 mt-2">{t('ui.admin.animals.qr.urlDesc', { name: formData.name || t('ui.admin.animals.qr.thisSpecies') })}</p>
