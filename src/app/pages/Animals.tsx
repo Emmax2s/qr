@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Filter } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { AnimalCard } from "../components/AnimalCard";
@@ -83,6 +83,20 @@ export function Animals() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
   const [selectedStatus, setSelectedStatus] = useState<string>("Todos");
+  const [selectedAnimalIndex, setSelectedAnimalIndex] = useState<number | null>(null);
+
+  // Detectar parámetro ?id= en la URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const idParam = params.get('id');
+    
+    if (idParam) {
+      const index = parseInt(idParam) - 1; // IDs son 1-based en el QR
+      if (index >= 0 && index < allAnimals.length) {
+        setSelectedAnimalIndex(index);
+      }
+    }
+  }, []);
 
   const categories = [
     { value: "Todos", label: t("ui.animalsPage.categories.all") },
@@ -189,9 +203,21 @@ export function Animals() {
       <section className="max-w-7xl mx-auto px-4 pb-24">
         {filteredAnimals.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredAnimals.map((animal, index) => (
-              <AnimalCard key={index} {...animal} />
-            ))}
+            {filteredAnimals.map((animal, index) => {
+              // Encontrar el índice original del animal en allAnimals
+              const originalIndex = allAnimals.findIndex(
+                a => a.name === animal.name && a.scientificName === animal.scientificName
+              );
+              const shouldBeOpen = selectedAnimalIndex === originalIndex;
+              
+              return (
+                <AnimalCard 
+                  key={originalIndex} 
+                  {...animal}
+                  isInitiallyOpen={shouldBeOpen}
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="border border-dashed border-gray-300 rounded-2xl p-16 text-center">

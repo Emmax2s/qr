@@ -21,6 +21,7 @@ interface AnimalCardProps {
   threats?: string[];
   importance?: string;
   funFacts?: string[];
+  isInitiallyOpen?: boolean;
 }
 
 export function AnimalCard({
@@ -42,9 +43,10 @@ export function AnimalCard({
   threats,
   importance,
   funFacts,
+  isInitiallyOpen = false,
 }: AnimalCardProps) {
   const { t, i18n } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(isInitiallyOpen);
   const [isPlaying, setIsPlaying] = useState(false);
   const currentLanguage = (i18n.resolvedLanguage || i18n.language || 'es').startsWith('es') ? 'es' : 'en';
 
