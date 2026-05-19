@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Facebook, Instagram } from "lucide-react";
 
 export function Footer() {
   return (
@@ -56,7 +56,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-3 text-gray-500">
                 <Phone className="w-4 h-4 flex-shrink-0" />
-                <span>(961) 614 4700</span>
+                <span>+529615438890<br />(961) 614 4700</span>
               </li>
               <li className="flex items-center gap-3 text-gray-500">
                 <Mail className="w-4 h-4 flex-shrink-0" />
@@ -78,14 +78,11 @@ export function Footer() {
             </div>
             <div>
               <div className="flex gap-4">
-                <a href="#" className="text-gray-400 hover:text-gray-900 transition">
+                <a href="https://www.facebook.com/ZoomatOficial/reviews?locale=es_LA" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-900 transition">
                   <Facebook className="w-5 h-5" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-gray-900 transition">
+                <a href="https://www.instagram.com/zoomatoficial_?fbclid=IwY2xjawR4qa5leHRuA2FlbQIxMABicmlkETFoVnhMNTdUeVlKR3ZCZGlKc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHjiesW6aWZfQScRZX2LXPnxLPup4_tZUkdHgv55Wd8H-2eSSyJRFw6vMC6SG_aem_1QU4iBPnadGvkI6AOaB8cg" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-900 transition">
                   <Instagram className="w-5 h-5" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-gray-900 transition">
-                  <Twitter className="w-5 h-5" />
                 </a>
               </div>
             </div>

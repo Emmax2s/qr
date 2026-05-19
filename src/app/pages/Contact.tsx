@@ -22,7 +22,7 @@ export function Contact() {
     {
       icon: Phone,
       title: t('ui.pages.contact.info.phone.title'),
-      details: ["(961) 614-4700", t('ui.pages.contact.info.phone.detail')]
+      details: ["+529615438890", "(961) 614-4700", t('ui.pages.contact.info.phone.detail')]
     },
     {
       icon: Mail,

@@ -19,7 +19,6 @@ export function Navigation() {
     { to: "/", label: t('ui.navbar.home') },
     { to: "/animales", label: t('ui.navbar.animals') },
     { to: "/visita", label: t('ui.navbar.visit') },
-    { to: "/mapa", label: t('ui.navbar.map') },
     { to: "/contacto", label: t('ui.navbar.contact') },
   ];
 

@@ -120,11 +120,26 @@ export function Visit() {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
-              <div className="text-center text-gray-600">
-                <MapPin className="w-12 h-12 mx-auto mb-2" />
-                <p className="font-semibold">{t('ui.pages.visit.location.mapTitle')}</p>
-                <p className="text-sm">Calzada Cerro Hueco, Tuxtla Gutiérrez</p>
+            <div className="rounded-lg h-96 overflow-hidden shadow-md border-2 border-gray-300">
+              <div className="relative h-full">
+                <a
+                  href="https://www.google.com/maps/search/Calz.+Cerro+Hueco+s%2Fn,+El+Zapotal,+29094+Tuxtla+Gutiérrez,+Chis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute top-4 left-4 z-10 bg-white px-4 py-2 rounded-lg shadow-lg text-sm font-semibold text-gray-800 hover:bg-gray-100 transition-colors flex items-center gap-2"
+                >
+                  <MapPin className="w-4 h-4" />
+                  Abrir en Maps
+                </a>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3739.8717826894944!2d-93.11355!3d16.756861!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ec5a8a8c9c9c9d%3A0x8c5d8a2c9c9c9c9d!2sZooMAT%20-%20Calz.%20Cerro%20Hueco%20s%2Fn%2C%20El%20Zapotal%2C%2029094%20Tuxtla%20Gu!5e0!3m2!1ses!2smx!4v1684000000000"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
               </div>
             </div>
           </div>
@@ -166,6 +181,7 @@ export function Visit() {
           <div className="bg-white/10 rounded-lg p-4">
             <p className="font-semibold mb-1">{t('ui.pages.visit.groups.bookingTitle')}</p>
             <p className="text-green-100">{t('ui.pages.visit.groups.bookingContact')}</p>
+            <p className="text-green-100">Tel: +529615438890</p>
             <p className="text-green-100">Tel: (961) 614-4700 ext. 123</p>
             <p className="text-green-100">educacion@zoomat.chiapas.gob.mx</p>
           </div>

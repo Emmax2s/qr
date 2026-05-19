@@ -86,11 +86,11 @@
           }
         },
         "prices": {
-          "adults": { "type": "Adultos", "description": "Mayores de 12 anos" },
-          "children": { "type": "Ninos", "description": "De 3 a 12 anos" },
+          "adults": { "type": "Adultos", "description": "Mayores de 12 años" },
+          "children": { "type": "Ninos", "description": "De 3 a 12 años" },
           "students": { "type": "Estudiantes", "description": "Con credencial vigente" },
-          "seniors": { "type": "Adultos Mayores", "description": "Mayores de 60 anos" },
-          "under3": { "type": "Menores de 3 anos", "price": "Gratis", "description": "Entrada sin costo" }
+          "seniors": { "type": "Adultos Mayores", "description": "Mayores de 60 años" },
+          "under3": { "type": "Menores de 3 años", "price": "Gratis", "description": "Entrada sin costo" }
         },
         "payment": {
           "title": "Metodos de Pago",
@@ -149,7 +149,8 @@
         },
         "interactive": {
           "title": "Mapa Interactivo del ZooMAT",
-          "description": "El zoologico cuenta con 6 zonas tematicas distribuidas en 100 hectareas de area natural protegida"
+          "description": "El zoologico cuenta con 6 zonas tematicas distribuidas en 100 hectareas de area natural protegida",
+          "openInMaps": "Abrir ubicacion en Google Maps"
         },
         "featuredSpecies": "Especies destacadas",
         "approxDuration": "Duracion aproximada",

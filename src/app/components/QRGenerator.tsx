@@ -5,9 +5,10 @@ import { Download } from 'lucide-react';
 interface QRGeneratorProps {
   value: string;
   animalName: string;
+  animalImageUrl?: string;
 }
 
-export function QRGenerator({ value, animalName }: QRGeneratorProps) {
+export function QRGenerator({ value, animalName, animalImageUrl }: QRGeneratorProps) {
   const qrRef = useRef<HTMLDivElement | null>(null);
 
   const downloadQRCode = () => {
@@ -52,6 +53,13 @@ export function QRGenerator({ value, animalName }: QRGeneratorProps) {
           includeMargin={true}
           fgColor="#000000"
           bgColor="#ffffff"
+          imageSettings={animalImageUrl ? {
+            src: animalImageUrl,
+            width: 44,
+            height: 44,
+            excavate: true,
+            crossOrigin: 'anonymous',
+          } : undefined}
         />
       </div>
       <button

@@ -232,7 +232,8 @@
         },
         "interactive": {
           "title": "Interactive ZooMAT map",
-          "description": "The zoo has 6 thematic zones across 100 hectares of protected natural area"
+          "description": "The zoo has 6 thematic zones across 100 hectares of protected natural area",
+          "openInMaps": "Open location in Google Maps"
         },
         "featuredSpecies": "Featured species",
         "approxDuration": "Approximate duration",

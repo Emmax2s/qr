@@ -3,6 +3,9 @@ import { useTranslation } from "react-i18next";
 
 export function ZooMap() {
   const { t } = useTranslation();
+  const zooAddress = "Calz. Cerro Hueco s/n, El Zapotal, 29094 Tuxtla Gutiérrez, Chis.";
+  const mapsQuery = encodeURIComponent(zooAddress);
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
 
   const zones = [
     {
@@ -91,14 +94,28 @@ export function ZooMap() {
             <h2 className="text-3xl font-bold text-green-800">{t('ui.pages.map.sections.generalPlan')}</h2>
           </div>
 
-          {/* Mapa Placeholder */}
-          <div className="bg-gradient-to-br from-green-100 to-green-200 rounded-lg p-12 mb-6 min-h-[500px] flex items-center justify-center border-4 border-green-300">
-            <div className="text-center">
-              <MapPin className="w-24 h-24 text-green-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-green-800 mb-2">{t('ui.pages.map.interactive.title')}</h3>
-              <p className="text-green-700 max-w-md">
-                {t('ui.pages.map.interactive.description')}
-              </p>
+          {/* Mapa Interactivo */}
+          <div className="rounded-lg mb-6 overflow-hidden shadow-md border-4 border-green-300">
+            <div className="relative">
+              <a
+                href="https://www.google.com/maps/search/Calz.+Cerro+Hueco+s%2Fn,+El+Zapotal,+29094+Tuxtla+Gutiérrez,+Chis"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-4 left-4 z-10 bg-white px-4 py-2 rounded-lg shadow-lg text-sm font-semibold text-gray-800 hover:bg-gray-100 transition-colors flex items-center gap-2"
+              >
+                <MapPin className="w-4 h-4" />
+                Abrir en Maps
+              </a>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3739.8717826894944!2d-93.11355!3d16.756861!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ec5a8a8c9c9c9d%3A0x8c5d8a2c9c9c9c9d!2sZooMAT%20-%20Calz.%20Cerro%20Hueco%20s%2Fn%2C%20El%20Zapotal%2C%2029094%20Tuxtla%20Gu!5e0!3m2!1ses!2smx!4v1684000000000"
+                width="100%"
+                height="500"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full"
+              />
             </div>
           </div>
 

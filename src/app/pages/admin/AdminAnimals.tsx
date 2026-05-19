@@ -283,6 +283,9 @@ export function AdminAnimals() {
     return Boolean(nameMatch || scientificMatch || habitatMatch);
   });
 
+  const qrTargetUrl = `${window.location.origin}/#/especie/${editingId || formData.slug || slugify(formData.name) || 'nuevo'}`;
+  const qrImageUrl = formData.imageUrl?.trim() || undefined;
+
   return (
     <div className="space-y-6">
       {/* Mensajes */}
@@ -566,10 +569,17 @@ export function AdminAnimals() {
                         className="p-4 bg-white border-4 border-gray-300 rounded-lg shadow-md"
                       >
                         <QRCode
-                          value={`${window.location.origin}/#/especie/${editingId || formData.slug || slugify(formData.name) || 'nuevo'}`}
+                          value={qrTargetUrl}
                           size={250}
                           level="H"
                           includeMargin={true}
+                          imageSettings={qrImageUrl ? {
+                            src: qrImageUrl,
+                            width: 56,
+                            height: 56,
+                            excavate: true,
+                            crossOrigin: 'anonymous',
+                          } : undefined}
                         />
                       </div>
                       <p className="text-xs text-gray-500 mt-3 text-center">{t('ui.admin.animals.qr.printNote')}</p>
@@ -582,7 +592,7 @@ export function AdminAnimals() {
                           <label className="block text-xs font-semibold text-gray-500 uppercase mb-2">{t('ui.admin.animals.qr.labelUrl')}</label>
                           <div className="bg-gray-50 p-3 rounded border border-gray-300 break-all">
                             <code className="text-xs text-gray-700">
-                              {`${window.location.origin}/#/especie/${editingId || formData.slug || slugify(formData.name) || 'nuevo'}`}
+                              {qrTargetUrl}
                             </code>
                           </div>
                           <p className="text-xs text-gray-500 mt-2">{t('ui.admin.animals.qr.urlDesc', { name: formData.name || t('ui.admin.animals.qr.thisSpecies') })}</p>
