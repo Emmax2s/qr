@@ -9,9 +9,7 @@ export function Footer() {
           {/* Acerca del ZooMAT */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="bg-gray-900 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
-                Z
-              </div>
+              <img src="https://via.placeholder.com/40/2d5016/ffffff?text=Zoo" alt="ZooMAT Logo" className="w-8 h-8 rounded-full object-cover" />
               <h3 className="font-semibold text-gray-900 tracking-tight">ZooMAT</h3>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed">

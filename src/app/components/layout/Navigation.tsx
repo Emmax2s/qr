@@ -33,9 +33,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition">
-            <div className="bg-gray-900 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">
-              Z
-            </div>
+            <img src="https://via.placeholder.com/50/2d5016/ffffff?text=Zoo" alt="ZooMAT Logo" className="w-12 h-12 rounded-full object-cover" />
             <div>
               <div className="font-semibold text-lg tracking-tight">ZooMAT</div>
               <div className="text-[10px] text-gray-500 uppercase tracking-widest">Chiapas</div>
