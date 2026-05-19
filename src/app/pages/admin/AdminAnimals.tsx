@@ -197,7 +197,7 @@ export function AdminAnimals() {
       const payload = {
         slug: formData.slug || slugify(formData.name),
         name: formData.name,
-        scientificName: formData.species,
+        species: formData.species,
         habitat: formData.habitat,
         imageUrl: formData.imageUrl,
         conservation: formData.conservation,
